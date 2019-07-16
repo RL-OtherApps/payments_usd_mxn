@@ -7,24 +7,23 @@ class wizar_paGOS_USD_MXN(models.Model):
 
     name = fields.Char(string="name")
 
-    payment_type = fields.Selection([('outbound', 'Send Money'), ('inbound', 'Receive Money'),('transfer', 'Internal Transfer')],string ="Tipo de pago") 
+   # type = fields.Selection([('outbound', 'Send Money'), ('inbound', 'Receive Money'),('transfer', 'Internal Transfer')],string ="Tipo de pago")
+
+    type = fields.Selection([('out_invoice','Factura de Cliente'), ('in_invoice','Factura de Vendedor')],) 
 
     @api.multi
     def pagos(self):
         self.ensure_one()
-        if self.payment_type :
+        if self.type :
             dom =[]
             title_sel = ""
-            if self.payment_type == 'outbound':
-                dom = [('payment_type','=','outbound')]
-                title_sel = ' de Enviar Dinero'
-            elif self.payment_type == 'inbound':
-                dom = [('payment_type','=', 'inbound')]
-                title_sel = ' de Recibir Dinero'
+            if self.type == 'out_invoice':
+                dom = [('type','=','out_invoice')]
+                title_sel = ' por  Cliente'
 
-            elif self.payment_type == 'transfer':
-                dom = [('payment_type', '=' , 'transfer' )] 
-                title_sel = " de Trasferencia Interna"       
+            elif self.type == 'in_invoice':
+                dom = [('type', '=' , 'in_invoice' )] 
+                title_sel = " por Proveedor"       
             else:
                 dom = [] 
                 title_sel = ' General '
@@ -36,30 +35,33 @@ class wizar_paGOS_USD_MXN(models.Model):
                 'type': 'ir.actions.act_window',
                 'views': [(tree_view_id, 'tree')],
                 'view_mode': 'tree',
-                'name': ('Historial' + str(title_sel)),
-                'res_model': 'account.payment',
+                'name': ('Factura' + str(title_sel)),
+                'res_model': 'account.invoice',
                 'domain':  dom
             }
             return action
 
 
 class camposNuevos(models.Model):
-    _inherit = 'account.payment'
+    _inherit = 'account.invoice' 
 
-    importe_mxn = fields.Monetary(string="Importe MXN")
-    importe_usd = fields.Monetary(string ="Importe USD")
+    importe_mxn = fields.Monetary(string="Total MXN")
+    importe_usd = fields.Monetary(string ="Total USD")
+
+    mxn = fields.Monetary(string="Pagar MXN", compute="_funcion")
+    usd = fields.Monetary(string="Pagar USD", compute="_funcion")
 
 
+    @api.one
+    def _funcion(self):
+        if self.residual:
+            self.usd = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','USD')], limit=1), self.residual)
+            self.mxn = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','MXN')], limit=1), self.residual)
 
-    @api.onchange('amount')
+    @api.onchange('amount_total')
     def compute_importe_usd_mxn(self):
         self.ensure_one()
-        self.importe_usd = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','USD')], limit=1), self.amount)
-        self.importe_mxn = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','MXN')], limit=1), self.amount)
+        self.importe_usd = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','USD')], limit=1), self.amount_total)
+        self.importe_mxn = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','MXN')], limit=1), self.amount_total)
 
-        
-
-
-
-
-
+s

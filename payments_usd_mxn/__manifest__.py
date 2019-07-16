@@ -3,11 +3,11 @@
     'name': "payments_usd_mxn",
 
     'summary': """
-    payments_usd_mxn: Look for the payment history of customers and suppliers to pay, the same way converts the amount to be paid in USD and MXN currency.""",
+    modulo para ver los factura de clientes y proveedores convirtiendo el total a moneda USD Y MXN .""",
 
     'description': """
         
-    Look for the payment history of customers and suppliers to pay
+      modulo para ver los factura de clientes y proveedores
             """,
     'author': "XMARTS",
     'email': 'desarrollo@xmarts.com',
