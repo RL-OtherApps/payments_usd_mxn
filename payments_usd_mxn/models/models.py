@@ -7,9 +7,7 @@ class wizar_paGOS_USD_MXN(models.Model):
 
     name = fields.Char(string="name")
 
-   # type = fields.Selection([('outbound', 'Send Money'), ('inbound', 'Receive Money'),('transfer', 'Internal Transfer')],string ="Tipo de pago")
-
-    type = fields.Selection([('out_invoice','Factura de Cliente'), ('in_invoice','Factura de Vendedor')],) 
+    type = fields.Selection([('out_invoice','Factura de Cliente'), ('in_invoice','Factura de Vendedor')],string="Tipo de Factura") 
 
     @api.multi
     def pagos(self):
