@@ -43,8 +43,8 @@ class wizar_paGOS_USD_MXN(models.Model):
 class camposNuevos(models.Model):
     _inherit = 'account.invoice' 
 
-    importe_mxn = fields.Monetary(string="Total MXN")
-    importe_usd = fields.Monetary(string ="Total USD")
+    importe_mxn = fields.Monetary(string="Total MXN", compute="_funcionusd")
+    importe_usd = fields.Monetary(string ="Total USD", compute="_funcionusd")
 
     mxn = fields.Monetary(string="Pagar MXN", compute="_funcion")
     usd = fields.Monetary(string="Pagar USD", compute="_funcion")
@@ -56,8 +56,10 @@ class camposNuevos(models.Model):
             self.usd = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','USD')], limit=1), self.residual)
             self.mxn = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','MXN')], limit=1), self.residual)
 
-    @api.onchange('amount_total')
-    def compute_importe_usd_mxn(self):
-        self.ensure_one()
-        self.importe_usd = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','USD')], limit=1), self.amount_total)
-        self.importe_mxn = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','MXN')], limit=1), self.amount_total)
+    @api.one
+    def _funcionusd(self):
+        if self.amount_total:
+            self.importe_usd = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','USD')], limit=1), self.amount_total)
+            self.importe_mxn = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','MXN')], limit=1), self.amount_total)
+        
+
