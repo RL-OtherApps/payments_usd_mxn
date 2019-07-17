@@ -61,5 +61,3 @@ class camposNuevos(models.Model):
         self.ensure_one()
         self.importe_usd = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','USD')], limit=1), self.amount_total)
         self.importe_mxn = self.env['res.currency']._compute(self.currency_id, self.env['res.currency'].search([('name','=','MXN')], limit=1), self.amount_total)
-
-s
