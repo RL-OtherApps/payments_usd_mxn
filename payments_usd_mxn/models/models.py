@@ -7,7 +7,7 @@ class wizar_paGOS_USD_MXN(models.Model):
 
     name = fields.Char(string="name")
 
-    type = fields.Selection([('out_invoice','Factura de Cliente'), ('in_invoice','Factura de Vendedor')],string="Tipo de Factura") 
+    type = fields.Selection([('out_invoice','Factura de Cliente'), ('in_invoice','Factura de Proveedor')],string="Tipo de Factura") 
 
     @api.multi
     def pagos(self):
@@ -33,7 +33,7 @@ class wizar_paGOS_USD_MXN(models.Model):
                 'type': 'ir.actions.act_window',
                 'views': [(tree_view_id, 'tree')],
                 'view_mode': 'tree',
-                'name': ('Factura' + str(title_sel)),
+                'name': ('Informe ' + str(title_sel)),
                 'res_model': 'account.invoice',
                 'domain':  dom
             }

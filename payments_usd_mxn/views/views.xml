@@ -2,7 +2,7 @@
   <data>
     <!--wizar par buscar por tipo de pago-->
     <record id="action_wizard_reporte" model="ir.ui.view">
-      <field name="name">Facturas USD-MXN</field>
+      <field name="name">Informe USD MXN</field>
       <field name="model">wizar.usd.mxn</field>
       <field name="arch" type="xml">
       <form>
@@ -21,7 +21,7 @@
     </record>
 
     <record id="action_view_wizard_reporte" model="ir.actions.act_window">
-      <field name="name">Facturas USD-MXN</field>
+      <field name="name">Informe USD MXN</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">wizar.usd.mxn</field>
       <field name="view_type">form</field>
@@ -30,8 +30,8 @@
       <field name="target">new</field>
     </record>
    <!--MENUT DE WIZAR EN LA OPCIONDE CLIENTES-->
-    <menuitem name="Facturas USD-MXN" action="action_view_wizard_reporte" id="menu_usd_mxn"
-      parent="account.menu_account_supplier" sequence="0" />
+    <menuitem name="Informe USD MXN" action="action_view_wizard_reporte" id="menu_usd_mxn"
+      parent="account.menu_finance_reports" sequence="1" />
 
    <!-- AGREGAR CAMPO AL MODLEO ACCOUNT.PAYMENT-->
 
@@ -68,7 +68,7 @@
       <field name="name">model.devo.tree</field>
       <field name="model">account.invoice</field>
       <field name="arch" type="xml">
-        <tree string="Facturas USD-MXN">
+        <tree string="Informe USD MXN">
             <field name="partner_id" invisible="1"/>
             <field name="source_email" invisible="1"/>
             <field name="invoice_icon" string=" "/>
